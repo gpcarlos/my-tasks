@@ -1,12 +1,12 @@
 package challenges
 
 import org.scalatest._
-import challenges.challenge2._
+import challenges.challenge3._
 
 class Challenge3Spec extends FlatSpec with Matchers {
 
   case class Spaces(total: Int, addends: Int, secure: Set[Int] = Set.empty) {
-    def comb: List[List[Int]] = combinations(total, addends, secure)
+    def comb: List[List[Int]] = combinationsWithoutSecures(total, addends, secure)
   }
 
   case class Hand(a: Spaces, b: Spaces) {
@@ -14,15 +14,11 @@ class Challenge3Spec extends FlatSpec with Matchers {
       val intersection = for {
         combA <- a.comb
         combB <- b.comb
-        inter <- combA.intersect(combB) if combA.intersect(combB).length ==1
+        inter <- combA.intersect(combB)
       } yield inter
-      println(a.comb)
-      println(b.comb)
-      println(intersection)
-      println("----------")
-      intersection.length match {
-        case 0 => 0
-        case 1 => intersection.head
+      intersection.distinct match {
+        case Nil => 0
+        case head :: Nil => intersection.head
         case _ => -1
       }
     }
@@ -78,7 +74,6 @@ class Challenge3Spec extends FlatSpec with Matchers {
     val space1 = Spaces(19, 4, Set(5, 6))
     val space2 = Spaces(16, 4, Set(7))
 
-//    Hand(space1, space2).solve shouldBe 1
-    Hand(space1, space2).solve shouldBe 7
+    Hand(space1, space2).solve shouldBe 1
   }
 }
