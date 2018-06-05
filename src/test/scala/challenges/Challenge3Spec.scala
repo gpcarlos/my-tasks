@@ -10,17 +10,10 @@ class Challenge3Spec extends FlatSpec with Matchers {
   }
 
   case class Hand(a: Spaces, b: Spaces) {
-    def solve: Int = {
-      val intersection = for {
-        combA <- a.comb
-        combB <- b.comb
-        inter <- combA.intersect(combB)
-      } yield inter
-      intersection.distinct match {
+    def solve: Int = a.comb.flatten.intersect(b.comb.flatten) match {
         case Nil => 0
-        case head :: Nil => intersection.head
+        case head :: Nil => head
         case _ => -1
-      }
     }
   }
 
